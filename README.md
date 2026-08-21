@@ -1,21 +1,21 @@
 # VSBA — Volley Sassuolo Beach Arena
 
-Progetto d'esame per il corso di Tecnologie Web: un sito per gestire le prenotazioni di un campo da beach volley, ispirato al vero "Volley Sassuolo Beach Arena" di Sassuolo. È fatto con Django, e la parte di calendario/disponibilità è dinamica grazie a un po' di JavaScript puro (fetch API, senza framework né npm — giusto per tenere le cose semplici).
+Progetto d'esame per il corso di Tecnologie Web: un sito per gestire le prenotazioni di un campo da beach volley, ispirato al vero "Volley Sassuolo Beach Arena" di Sassuolo. È fatto con Django, e la parte di calendario/disponibilità è dinamica con javascript.
 
 Una cosa a cui tenevo particolarmente: le prenotazioni non sono bloccate all'ora esatta. Si può iniziare a qualsiasi quarto d'ora e scegliere una durata a piacere (da 15 minuti a 4 ore, sempre in multipli di 15), e il prezzo si calcola proporzionalmente. Se una prenotazione attraversa le 18:00 viene addirittura spezzata automaticamente tra tariffa diurna e serale.
 
-**Sulla grafica**: logo, foto del campo e sfondo in `static/img/` li ho presi dal sito ufficiale [volleysassuolo.com](https://volleysassuolo.com) (sezione Beach Arena) — mi sembrava più sensato usare l'identità visiva vera della struttura piuttosto che inventarmene una.
+**Sulla grafica**: logo, foto del campo e sfondo in `static/img/` li ho presi dal sito ufficiale [volleysassuolo.com](https://volleysassuolo.com) (sezione Beach Arena).
 
 ## Chi può fare cosa
 
-- **Visitatore non registrato**: può solo guardare — disponibilità, orari, servizi, prezzario.
-- **Cliente**: prenota, modifica o cancella le proprie prenotazioni, vede lo storico, si mette in lista d'attesa se uno slot è occupato e riceve notifiche dentro al sito (niente email, solo notifiche interne).
+- **Visitatore non registrato**: può solo guardare disponibilità, orari, servizi, prezzario.
+- **Cliente**: prenota, modifica o cancella le proprie prenotazioni, vede lo storico, si mette in lista d'attesa se uno slot è occupato e riceve notifiche dentro al sito.
 - **Gestore** (ce ne può essere più di uno): gestisce orari di apertura, prezzario, chiusure straordinarie e servizi. Le prenotazioni vengono assegnate in automatico al gestore che ne ha meno in carico, così il lavoro si distribuisce da solo.
-- **Admin**: fa tutto quello che fa un gestore, più la parte economica — vede la propria quota (40% dell'incassato), il resoconto settimanale diviso per gestore, e può applicare uno sconto a una prenotazione specifica (visibile solo al cliente coinvolto, non agli altri).
+- **Admin**: fa tutto quello che fa un gestore, più la parte economica vede la propria quota (40% dell'incassato), il resoconto settimanale diviso per gestore, e può applicare uno sconto a una prenotazione specifica (visibile solo al cliente coinvolto, non agli altri).
 
 ## Come avviarlo
 
-Serve Python 3.12 e [pipenv](https://pipenv.pypa.io/) (`pip install pipenv` se non ce l'hai già).
+Python 3.12 e [pipenv](https://pipenv.pypa.io/) (`pip install pipenv`).
 
 ```bash
 pipenv install
@@ -26,7 +26,7 @@ pipenv run python manage.py runserver
 
 Poi il sito è su http://127.0.0.1:8000/.
 
-Se preferisci, da Git Bash c'è anche `./run.sh` che fa tutto questo da solo. Per l'elenco di tutti i comandi utili (compresi quelli meno usati di `manage.py`) ho scritto una guida a parte: **[COMANDI.md](COMANDI.md)**.
+Se preferisci, da Git Bash c'è anche `./run.sh` che fa tutto questo da solo. Per l'elenco di tutti i comandi utili  **[COMANDI.md](COMANDI.md)**.
 
 ## Credenziali per provare il sito
 
