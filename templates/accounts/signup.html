@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Registrati{% endblock %}
+{% block content %}
+<h1>Registrati</h1>
+<p>La registrazione crea un account cliente, per prenotare il campo. Per diventare gestore della struttura contatta l'admin: sarà lui ad abilitare il tuo account in un secondo momento.</p>
+<form method="post" class="form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Crea account</button>
+</form>
+<p><a href="{% url 'accounts:login' %}">Hai già un account? Accedi</a></p>
+{% endblock %}

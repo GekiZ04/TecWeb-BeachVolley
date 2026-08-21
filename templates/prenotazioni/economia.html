@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Economia della struttura{% endblock %}
+{% block content %}
+<h1>Economia della struttura</h1>
+<p>Settimana dal {{ inizio }} al {{ fine }}</p>
+<p>
+    <a class="btn btn-secondary" href="?inizio={{ settimana_prec|date:'Y-m-d' }}">&larr; Settimana precedente</a>
+    <a class="btn btn-secondary" href="?inizio={{ settimana_succ|date:'Y-m-d' }}">Settimana successiva &rarr;</a>
+</p>
+
+<h2>Resoconto per gestore</h2>
+{% if per_gestore %}
+    <table>
+        <thead><tr><th>Gestore</th><th>Incassato</th><th>Quota gestore (60%)</th><th>Quota admin (40%)</th></tr></thead>
+        <tbody>
+        {% for nome, dati in per_gestore.items %}
+            <tr>
+                <td>{{ nome }}</td>
+                <td>€ {{ dati.incassato }}</td>
+                <td>€ {{ dati.quota_gestore }}</td>
+                <td>€ {{ dati.quota_admin }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Totale</th>
+                <th>€ {{ totale_incassato }}</th>
+                <th>€ {{ totale_gestori }}</th>
+                <th>€ {{ totale_admin }}</th>
+            </tr>
+        </tfoot>
+    </table>
+{% else %}
+    <p>Nessuna prenotazione confermata in questa settimana.</p>
+{% endif %}
+
+<h2>Dettaglio prenotazioni</h2>
+{% if prenotazioni %}
+    <table>
+        <thead><tr><th>Data</th><th>Cliente</th><th>Gestore</th><th>Importo</th><th>Quota admin</th><th>Sconto</th><th></th></tr></thead>
+        <tbody>
+        {% for p in prenotazioni %}
+            <tr>
+                <td>{{ p.data }} {{ p.ora_inizio|time:"H:i" }}</td>
+                <td>{{ p.utente }}</td>
+                <td>
+                    <form method="post" action="{% url 'prenotazioni:riassegna_gestore' p.pk %}" class="inline-form-row">
+                        {% csrf_token %}
+                        <input type="hidden" name="inizio" value="{{ inizio|date:'Y-m-d' }}">
+                        <select name="gestore_id" onchange="this.form.requestSubmit()">
+                            <option value="" {% if not p.gestore %}selected{% endif %}>Non assegnato</option>
+                            {% for g in gestori %}
+                                <option value="{{ g.pk }}" {% if p.gestore_id == g.pk %}selected{% endif %}>{{ g }}</option>
+                            {% endfor %}
+                        </select>
+                        <noscript><button type="submit" class="btn">Assegna</button></noscript>
+                    </form>
+                </td>
+                <td>€ {{ p.importo_dovuto }}</td>
+                <td>€ {{ p.quota_admin }}</td>
+                <td>{% if p.ha_sconto %}Sì (listino € {{ p.prezzo_listino }}){% else %}No{% endif %}</td>
+                <td><a class="btn" href="{% url 'prenotazioni:applica_sconto' p.pk %}">Applica sconto</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Nessuna prenotazione in questa settimana.</p>
+{% endif %}
+{% endblock %}

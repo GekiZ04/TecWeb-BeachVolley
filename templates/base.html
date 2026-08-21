@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VSBA{% endblock %}</title>
+    <link rel="icon" href="{% static 'img/vsba-toro.webp' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=vsba2">
+</head>
+<body>
+<header class="navbar">
+    <a class="brand" href="{% url 'home' %}">
+        <img src="{% static 'img/vsba-toro.webp' %}" alt="VSBA">
+        <span class="brand-name">Volley Sassuolo<br>Beach Arena</span>
+    </a>
+    <nav>
+        {% if user.is_authenticated %}
+            {% if user.is_cliente %}
+                <a href="{% url 'prenotazioni:nuova' %}">Prenota</a>
+                <a href="{% url 'prenotazioni:mie' %}">Le mie prenotazioni</a>
+            {% endif %}
+            {% if user.is_gestore_or_admin %}
+                <a href="{% url 'struttura:dashboard' %}">Area gestore</a>
+            {% endif %}
+            {% if user.is_admin_struttura %}
+                <a href="{% url 'prenotazioni:economia' %}">Economia</a>
+                <a href="{% url 'accounts:gestione_utenti' %}">Gestione utenti</a>
+            {% endif %}
+            <a href="{% url 'prenotazioni:notifiche' %}" class="notif-link">Notifiche
+                {% if notifiche_non_lette %}<span class="badge">{{ notifiche_non_lette }}</span>{% endif %}
+            </a>
+            <span class="whoami">{{ user.username }} ({{ user.get_role_display }})</span>
+            <form action="{% url 'accounts:logout' %}" method="post" class="inline-form">
+                {% csrf_token %}
+                <button type="submit" class="link-button">Esci</button>
+            </form>
+        {% else %}
+            <a href="{% url 'accounts:login' %}">Accedi</a>
+            <a href="{% url 'accounts:signup' %}">Registrati</a>
+        {% endif %}
+    </nav>
+</header>
+<div class="pattern-band"></div>
+
+<main class="container">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message {{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+    <p>Progetto d'esame — Tecnologie Web</p>
+</footer>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

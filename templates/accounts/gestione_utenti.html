@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Gestione utenti{% endblock %}
+{% block content %}
+<h1>Gestione utenti</h1>
+<p>Solo l'admin può promuovere un cliente a gestore della struttura (o riportarlo a cliente).</p>
+
+{% if utenti %}
+    <table>
+        <thead><tr><th>Username</th><th>Nome</th><th>Email</th><th>Ruolo</th></tr></thead>
+        <tbody>
+        {% for u in utenti %}
+            <tr>
+                <td>{{ u.username }}</td>
+                <td>{{ u.get_full_name|default:"—" }}</td>
+                <td>{{ u.email|default:"—" }}</td>
+                <td>
+                    <form method="post" class="inline-form-row">
+                        {% csrf_token %}
+                        <input type="hidden" name="user_id" value="{{ u.pk }}">
+                        <select name="ruolo" onchange="this.form.requestSubmit()">
+                            <option value="cliente" {% if u.is_cliente %}selected{% endif %}>Cliente</option>
+                            <option value="gestore" {% if u.is_gestore %}selected{% endif %}>Gestore</option>
+                        </select>
+                        <noscript><button type="submit" class="btn">Salva</button></noscript>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Nessun utente registrato.</p>
+{% endif %}
+{% endblock %}

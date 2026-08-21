@@ -1,0 +1,379 @@
+/* Un unico foglio di stile per tutto il sito, niente framework CSS: variabili colore
+   VSBA, il layout di base (navbar, container, form, tabelle) e poi i blocchi specifici
+   per il calendario settimanale e le card della home. */
+
+:root {
+    --vsba-blue: #1533e6;
+    --vsba-blue-dark: #0d1f8f;
+    --vsba-orange: #ff7a1a;
+    --vsba-yellow: #ffcc00;
+    --vsba-black: #15151a;
+    --vsba-pink: #f62350;
+    --border: #e2e2e6;
+    --text: #24242a;
+    --success: #2a9d8f;
+    --danger: #d64545;
+    --font-display: "Segoe UI", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin: 0;
+    color: var(--text);
+    background: #f4f5f8;
+}
+
+a { color: var(--vsba-blue); }
+
+h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+}
+
+h1 { color: var(--vsba-black); margin-top: 0; }
+h2 {
+    color: var(--vsba-black);
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    border-left: 5px solid var(--vsba-orange);
+    padding-left: 0.6rem;
+    margin-top: 2rem;
+}
+
+.pattern-band {
+    height: 10px;
+    background-image: url('../img/sfondo-vsba.webp');
+    background-size: cover;
+    background-position: center;
+}
+
+.hero + .pattern-band {
+    margin: 0 -2rem 1.5rem;
+}
+
+.navbar {
+    background: var(--vsba-black);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.navbar .brand {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.navbar .brand img {
+    height: 42px;
+    width: auto;
+    display: block;
+}
+
+.navbar .brand .brand-name {
+    font-size: 0.8rem;
+    line-height: 1.25;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #eee;
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.navbar nav a, .navbar nav .link-button {
+    color: #ddd;
+    text-decoration: none;
+    margin-left: 1.1rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.navbar nav a:hover, .navbar nav .link-button:hover {
+    color: var(--vsba-orange);
+}
+
+.link-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+}
+
+.inline-form { display: inline; }
+
+.whoami {
+    margin-left: 1.1rem;
+    opacity: 0.75;
+    font-size: 0.85rem;
+}
+
+.badge {
+    background: var(--vsba-pink);
+    color: white;
+    border-radius: 50%;
+    padding: 0.1rem 0.45rem;
+    font-size: 0.75rem;
+    margin-left: 0.2rem;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto 1.5rem;
+    background: white;
+    padding: 1.5rem 2rem 2rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    min-height: 60vh;
+}
+
+.footer {
+    text-align: center;
+    padding: 1rem;
+    color: #888;
+    font-size: 0.85rem;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1rem 0;
+}
+
+th, td {
+    border: 1px solid var(--border);
+    padding: 0.55rem 0.75rem;
+    text-align: left;
+}
+
+th { background: #f6f7f9; text-transform: uppercase; font-size: 0.78rem; letter-spacing: 0.03em; color: #555; }
+
+.form p { margin: 0.75rem 0; }
+.form label { font-weight: 600; font-size: 0.92rem; }
+.form input, .form select, .form textarea {
+    width: 100%;
+    padding: 0.45rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+button, .btn {
+    background: var(--vsba-orange);
+    color: white;
+    border: none;
+    padding: 0.55rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+button:hover, .btn:hover { background: #e8690a; }
+
+.btn-danger { background: var(--vsba-pink); color: white; }
+.btn-danger:hover { background: #c81b3f; }
+
+.btn-secondary { background: #6b6b74; color: white; }
+.btn-secondary:hover { background: #52525a; }
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    border-top: 3px solid var(--vsba-blue);
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--text);
+    display: block;
+}
+
+.card:hover { border-top-color: var(--vsba-orange); }
+
+.messages { list-style: none; padding: 0; }
+.messages .message {
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    margin-bottom: 0.6rem;
+}
+.messages .success { background: #d8f3dc; color: #1b4332; }
+.messages .error { background: #ffe0e0; color: #7a1414; }
+.messages .info, .messages .warning { background: #fff3cd; color: #664d03; }
+
+.calendario-settimanale-wrapper {
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.calendario-settimanale {
+    margin: 0;
+    min-width: 640px;
+}
+
+.calendario-settimanale th, .calendario-settimanale td {
+    text-align: center;
+    padding: 0.35rem;
+}
+
+.calendario-settimanale thead th {
+    background: #f6f7f9;
+}
+
+.calendario-settimanale td.cella-calendario {
+    padding: 2px;
+}
+
+.cella-calendario {
+    width: 34px;
+    height: 28px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+td.cella-calendario {
+    display: table-cell;
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.cella-calendario.libero { background: #cdeed7; }
+.cella-calendario.occupato { background: #f8c9c9; }
+.cella-calendario.chiuso { background: #e4e4e8; }
+
+.blocco-occupato {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    background: #ef8f8f;
+    border-radius: 2px;
+}
+
+.cella-link {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+}
+
+.cella-link:hover, .cella-link:focus-visible {
+    background: rgba(21, 51, 230, 0.18);
+    outline: none;
+}
+
+.legenda { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; flex-wrap: wrap; }
+.legenda .cella-calendario { margin-left: 0.6rem; }
+.legenda .cella-calendario:first-child { margin-left: 0; }
+
+.price-preview {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--vsba-blue-dark);
+}
+
+.tag {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+}
+.tag.confermata { background: #d8f3dc; color: #1b4332; }
+.tag.cancellata { background: #ffe0e0; color: #7a1414; }
+
+.hidden { display: none; }
+
+.side-panel {
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--vsba-orange);
+    border-radius: 4px;
+    padding: 1rem;
+    margin-top: 1rem;
+    background: #fafafa;
+}
+
+.slot-label { font-weight: bold; }
+
+.data-input { max-width: 220px; }
+
+.dashboard-section {
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    margin-top: 2rem;
+}
+
+.inline-form-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+/* Hero */
+.hero {
+    position: relative;
+    margin: -1.5rem -2rem 0;
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+    color: white;
+    background: linear-gradient(rgba(10, 12, 30, 0.55), rgba(10, 12, 30, 0.8)), url('../img/campo-2.webp');
+    background-size: cover;
+    background-position: center 70%;
+}
+
+.hero img.hero-logo {
+    height: 120px;
+    width: auto;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+}
+
+.hero .logo-sub {
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 1.5rem;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+.hero .btn {
+    font-size: 1rem;
+    padding: 0.75rem 1.75rem;
+    background: var(--vsba-orange);
+}
+
+.hero .btn:hover { background: var(--vsba-yellow); color: var(--vsba-black); }
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+.gallery img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+}

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Area gestore{% endblock %}
+{% block content %}
+<h1>Area gestore</h1>
+
+<section class="dashboard-section">
+    <h2>Orari di apertura</h2>
+    <form method="post" action="{% url 'struttura:salva_orari' %}" class="form">
+        {% csrf_token %}
+        {{ orario_formset.management_form }}
+        <table>
+            <thead><tr><th>Giorno</th><th>Aperto</th><th>Apertura</th><th>Chiusura</th></tr></thead>
+            <tbody>
+            {% for form in orario_formset %}
+                <tr>
+                    <td>{{ form.instance.get_giorno_settimana_display }}{{ form.id }}</td>
+                    <td>{{ form.aperto }}</td>
+                    <td>{{ form.ora_apertura }}</td>
+                    <td>{{ form.ora_chiusura }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Salva orari</button>
+    </form>
+</section>
+
+<section class="dashboard-section">
+    <h2>Prezzario (stagione in corso)</h2>
+    <form method="post" action="{% url 'struttura:salva_tariffa' %}" class="form">
+        {% csrf_token %}
+        {{ tariffa_form.as_p }}
+        <button type="submit">Aggiorna prezzario</button>
+    </form>
+</section>
+
+<section class="dashboard-section">
+    <h2>Chiusure straordinarie</h2>
+    <table>
+        <thead><tr><th>Dal</th><th>Al</th><th>Orario</th><th>Motivo</th><th></th></tr></thead>
+        <tbody>
+        {% for c in chiusure %}
+            <tr>
+                <td>{{ c.data_inizio }}</td>
+                <td>{{ c.data_fine }}</td>
+                <td>{% if c.ora_inizio %}{{ c.ora_inizio|time:"H:i" }}-{{ c.ora_fine|time:"H:i" }}{% else %}Tutto il giorno{% endif %}</td>
+                <td>{{ c.motivo }}</td>
+                <td>
+                    <form method="post" action="{% url 'struttura:elimina_chiusura' c.pk %}" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-danger">Elimina</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form method="post" action="{% url 'struttura:nuova_chiusura' %}" class="form">
+        {% csrf_token %}
+        {{ chiusura_form.as_p }}
+        <button type="submit">Aggiungi chiusura</button>
+    </form>
+</section>
+
+<section class="dashboard-section">
+    <h2>Servizi</h2>
+    <table>
+        <thead><tr><th>Nome</th><th>Descrizione</th><th>Disponibile</th><th></th></tr></thead>
+        <tbody>
+        {% for s in servizi %}
+            <tr>
+                <td>{{ s.nome }}</td>
+                <td>{{ s.descrizione }}</td>
+                <td>{{ s.disponibile|yesno:"Sì,No" }}</td>
+                <td>
+                    <form method="post" action="{% url 'struttura:elimina_servizio' s.pk %}" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-danger">Elimina</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form method="post" action="{% url 'struttura:nuovo_servizio' %}" class="form">
+        {% csrf_token %}
+        {{ servizio_form.as_p }}
+        <button type="submit">Aggiungi servizio</button>
+    </form>
+</section>
+
+<section class="dashboard-section">
+    <h2>Prenotazioni {% if user.is_admin_struttura %}(tutte){% else %}a te assegnate{% endif %}</h2>
+    <table>
+        <thead><tr><th>Data</th><th>Orario</th><th>Cliente</th><th>Gestore</th><th>Importo</th></tr></thead>
+        <tbody>
+        {% for p in prenotazioni %}
+            <tr>
+                <td>{{ p.data }}</td>
+                <td>{{ p.ora_inizio|time:"H:i" }}-{{ p.ora_fine|time:"H:i" }}</td>
+                <td>{{ p.utente }}</td>
+                <td>{{ p.gestore|default:"—" }}</td>
+                <td>€ {{ p.importo_dovuto }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5">Nessuna prenotazione futura.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

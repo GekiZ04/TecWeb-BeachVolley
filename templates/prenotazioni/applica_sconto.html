@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Applica sconto{% endblock %}
+{% block content %}
+<h1>Applica sconto</h1>
+<p>Prenotazione di {{ prenotazione.utente }} — {{ prenotazione.data }} {{ prenotazione.ora_inizio|time:"H:i" }}-{{ prenotazione.ora_fine|time:"H:i" }}</p>
+<p>Prezzo di listino: € {{ prenotazione.prezzo_listino }}</p>
+<form method="post" class="form">
+    {% csrf_token %}
+    <p><label>Nuovo importo finale (lascia vuoto per rimuovere lo sconto)
+        <input type="number" step="0.01" min="0" name="prezzo_finale" value="{{ prenotazione.prezzo_finale|default_if_none:'' }}">
+    </label></p>
+    <p class="hint">Il prezzo scontato sarà visibile solo al cliente che ha effettuato la prenotazione e all'admin.</p>
+    <button type="submit">Salva</button>
+</form>
+<p><a href="{% url 'prenotazioni:economia' %}">&larr; Torna al resoconto</a></p>
+{% endblock %}

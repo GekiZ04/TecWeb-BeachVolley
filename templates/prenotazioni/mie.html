@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Le mie prenotazioni{% endblock %}
+{% block content %}
+<h1>Le mie prenotazioni</h1>
+
+<h2>Prossime</h2>
+{% if prossime %}
+    <table>
+        <thead><tr><th>Data</th><th>Orario</th><th>Spogliatoio</th><th>Partecipanti</th><th>Importo</th><th>Azioni</th></tr></thead>
+        <tbody>
+        {% for p in prossime %}
+            <tr>
+                <td>{{ p.data }}</td>
+                <td>{{ p.ora_inizio|time:"H:i" }}-{{ p.ora_fine|time:"H:i" }}</td>
+                <td>{{ p.spogliatoio|yesno:"Sì,No" }}</td>
+                <td>{{ p.numero_partecipanti }}</td>
+                <td>€ {{ p.importo_dovuto }}</td>
+                <td>
+                    <a class="btn" href="{% url 'prenotazioni:modifica' p.pk %}">Modifica</a>
+                    <form method="post" action="{% url 'prenotazioni:cancella' p.pk %}" class="inline-form" onsubmit="return confirm('Confermi la cancellazione?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-danger">Cancella</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Nessuna prenotazione futura. <a href="{% url 'prenotazioni:nuova' %}">Prenotane una!</a></p>
+{% endif %}
+
+<h2>Storico</h2>
+{% if storico %}
+    <table>
+        <thead><tr><th>Data</th><th>Orario</th><th>Importo</th><th>Stato</th></tr></thead>
+        <tbody>
+        {% for p in storico %}
+            <tr>
+                <td>{{ p.data }}</td>
+                <td>{{ p.ora_inizio|time:"H:i" }}-{{ p.ora_fine|time:"H:i" }}</td>
+                <td>€ {{ p.importo_dovuto }}</td>
+                <td><span class="tag {{ p.stato }}">{{ p.get_stato_display }}</span></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Nessuna prenotazione passata.</p>
+{% endif %}
+{% endblock %}

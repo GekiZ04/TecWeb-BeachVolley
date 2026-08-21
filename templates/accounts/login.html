@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Accedi{% endblock %}
+{% block content %}
+<h1>Accedi</h1>
+<form method="post" class="form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Accedi</button>
+</form>
+<p><a href="{% url 'accounts:signup' %}">Non hai un account? Registrati</a></p>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Nuova prenotazione{% endblock %}
+{% block content %}
+<h1>Nuova prenotazione</h1>
+<p>Scegli una data e un orario di partenza libero (anche a mezz'ora o quarto d'ora) dal menù, poi la durata desiderata. Se l'orario è occupato puoi metterti in lista d'attesa.</p>
+
+<div class="prenota-picker" data-endpoint="{% url 'struttura:disponibilita_json' %}" data-data="{{ data|date:'Y-m-d' }}"
+     {% if ora_richiesta %}data-prefill-ora-inizio="{{ ora_richiesta|time:'H:i' }}"{% endif %}>
+    <p><label>Data
+        <input type="date" class="data-input" value="{{ data|date:'Y-m-d' }}" min="{% now 'Y-m-d' %}">
+    </label></p>
+    <p><label>Orario
+        <select class="orario-select"></select>
+    </label></p>
+</div>
+
+<div id="form-prenota" class="side-panel hidden" data-prezzo-endpoint="{% url 'prenotazioni:prezzo' %}">
+    <h3>Prenota lo slot: <span class="slot-label"></span></h3>
+    <form method="post" action="{% url 'prenotazioni:nuova' %}" class="form">
+        {% csrf_token %}
+        <input type="hidden" name="data">
+        <input type="hidden" name="ora_inizio">
+        <input type="hidden" name="ora_fine">
+        <p><label>Durata
+            <select name="durata_minuti"></select>
+        </label></p>
+        <p><label><input type="checkbox" name="spogliatoio"> Includi spogliatoio</label></p>
+        <p><label>Numero di partecipanti
+            <input type="number" name="numero_partecipanti" min="1" max="50" value="1">
+        </label></p>
+        <p>Prezzo stimato: <span class="price-preview">—</span></p>
+        <button type="submit">Conferma prenotazione</button>
+    </form>
+</div>
+
+<div id="form-attesa" class="side-panel hidden">
+    <h3>Slot occupato: <span class="slot-label"></span></h3>
+    <p>Vuoi essere avvisato se si libera?</p>
+    <form method="post" action="{% url 'prenotazioni:lista_attesa' %}">
+        {% csrf_token %}
+        <input type="hidden" name="data">
+        <input type="hidden" name="ora_inizio">
+        <input type="hidden" name="ora_fine">
+        <button type="submit">Mettiti in lista d'attesa</button>
+    </form>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/disponibilita.js' %}"></script>
+{% endblock %}

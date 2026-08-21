@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Modifica prenotazione{% endblock %}
+{% block content %}
+<h1>Modifica prenotazione</h1>
+<p>Prenotazione attuale: {{ prenotazione.data }} {{ prenotazione.ora_inizio|time:"H:i" }}-{{ prenotazione.ora_fine|time:"H:i" }}</p>
+<p>Seleziona un nuovo orario dal menù (o riconferma lo stesso) per aggiornare la prenotazione.</p>
+
+<div class="prenota-picker"
+     data-endpoint="{% url 'struttura:disponibilita_json' %}"
+     data-data="{{ data|date:'Y-m-d' }}"
+     data-escludi-prenotazione="{{ prenotazione.pk }}"
+     data-prefill-ora-inizio="{{ prenotazione.ora_inizio|time:'H:i' }}"
+     data-prefill-ora-fine="{{ prenotazione.ora_fine|time:'H:i' }}"
+     data-prefill-durata-minuti="{{ prenotazione.durata_minuti }}"
+     data-prefill-spogliatoio="{{ prenotazione.spogliatoio|yesno:'true,false' }}"
+     data-prefill-partecipanti="{{ prenotazione.numero_partecipanti }}">
+    <p><label>Data
+        <input type="date" class="data-input" value="{{ data|date:'Y-m-d' }}" min="{% now 'Y-m-d' %}">
+    </label></p>
+    <p><label>Orario
+        <select class="orario-select"></select>
+    </label></p>
+</div>
+
+<div id="form-prenota" class="side-panel hidden" data-prezzo-endpoint="{% url 'prenotazioni:prezzo' %}">
+    <h3>Nuovo slot: <span class="slot-label"></span></h3>
+    <form method="post" action="{% url 'prenotazioni:modifica' prenotazione.pk %}" class="form">
+        {% csrf_token %}
+        <input type="hidden" name="data">
+        <input type="hidden" name="ora_inizio">
+        <input type="hidden" name="ora_fine">
+        <p><label>Durata
+            <select name="durata_minuti"></select>
+        </label></p>
+        <p><label><input type="checkbox" name="spogliatoio"> Includi spogliatoio</label></p>
+        <p><label>Numero di partecipanti
+            <input type="number" name="numero_partecipanti" min="1" max="50" value="1">
+        </label></p>
+        <p>Prezzo stimato: <span class="price-preview">—</span></p>
+        <button type="submit">Salva modifiche</button>
+    </form>
+</div>
+
+<div id="form-attesa" class="side-panel hidden">
+    <h3>Slot occupato: <span class="slot-label"></span></h3>
+    <p>Non puoi spostare qui la prenotazione. Puoi comunque metterti in lista d'attesa.</p>
+    <form method="post" action="{% url 'prenotazioni:lista_attesa' %}">
+        {% csrf_token %}
+        <input type="hidden" name="data">
+        <input type="hidden" name="ora_inizio">
+        <input type="hidden" name="ora_fine">
+        <button type="submit">Mettiti in lista d'attesa</button>
+    </form>
+</div>
+
+<p><a href="{% url 'prenotazioni:mie' %}">&larr; Torna alle mie prenotazioni</a></p>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/disponibilita.js' %}"></script>
+{% endblock %}

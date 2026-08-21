@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load l10n static %}
+{% block title %}{{ campo.nome|default:"VSBA" }}{% endblock %}
+{% block content %}
+<div class="hero">
+    <img class="hero-logo" src="{% static 'img/vsba-toro.webp' %}" alt="VSBA">
+    <p class="logo-sub">{{ campo.nome|default:"Volley Sassuolo Beach Arena" }}</p>
+    {% if user.is_authenticated and user.is_cliente %}
+        <a class="btn" href="{% url 'prenotazioni:nuova' %}">Prenota ora</a>
+    {% elif not user.is_authenticated %}
+        <a class="btn" href="{% url 'accounts:signup' %}">Registrati per prenotare</a>
+    {% endif %}
+</div>
+<div class="pattern-band"></div>
+
+<p>{{ campo.descrizione }}</p>
+
+<div class="gallery">
+    <img src="{% static 'img/campo-1.webp' %}" alt="Campo da beach volley">
+    <img src="{% static 'img/campo-2.webp' %}" alt="Campo illuminato di sera">
+    <img src="{% static 'img/campo-4.webp' %}" alt="Rete e recinzione del campo">
+</div>
+
+<h2>Servizi disponibili</h2>
+{% if servizi %}
+    <ul>
+        {% for s in servizi %}<li><strong>{{ s.nome }}</strong>{% if s.descrizione %} — {{ s.descrizione }}{% endif %}</li>{% endfor %}
+    </ul>
+{% else %}
+    <p>Nessun servizio elencato al momento.</p>
+{% endif %}
+
+<h2>Orari di apertura</h2>
+<table>
+    <thead><tr><th>Giorno</th><th>Orario</th></tr></thead>
+    <tbody>
+    {% for o in orari %}
+        <tr>
+            <td>{{ o.get_giorno_settimana_display }}</td>
+            <td>{% if o.aperto %}{{ o.ora_apertura|time:"H:i" }} - {{ o.ora_chiusura|time:"H:i" }}{% else %}Chiuso{% endif %}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h2>Prezzario</h2>
+<table>
+    <thead><tr><th>Fascia</th><th>Senza spogliatoio</th><th>Con spogliatoio</th></tr></thead>
+    <tbody>
+        <tr><td>Diurna (fino alle 18:00)</td><td>€ {{ tariffa.prezzo_diurno_no_spogliatoio }}/ora</td><td>€ {{ tariffa.prezzo_diurno_spogliatoio }}/ora</td></tr>
+        <tr><td>Serale (dopo le 18:00)</td><td>€ {{ tariffa.prezzo_serale_no_spogliatoio }}/ora</td><td>€ {{ tariffa.prezzo_serale_spogliatoio }}/ora</td></tr>
+    </tbody>
+</table>
+<p>Oltre {{ tariffa.soglia_partecipanti }} partecipanti: + € {{ tariffa.sovrapprezzo_persona_extra }} a persona.</p>
+
+<h2>Disponibilità della settimana</h2>
+<p>
+    <a class="btn btn-secondary" href="?inizio={{ settimana_prec|date:'Y-m-d' }}">&larr; Settimana precedente</a>
+    <a class="btn btn-secondary" href="?inizio={{ settimana_succ|date:'Y-m-d' }}">Settimana successiva &rarr;</a>
+</p>
+{% if calendario.righe %}
+    <div class="calendario-settimanale-wrapper">
+        <table class="calendario-settimanale">
+            <thead>
+                <tr>
+                    <th></th>
+                    {% for giorno in calendario.giorni %}
+                        <th>{{ giorno|date:"D" }}<br>{{ giorno|date:"d/m" }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for riga in calendario.righe %}
+                <tr>
+                    <th>{{ riga.ora_inizio|time:"H:i" }}</th>
+                    {% for cella in riga.celle %}
+                        <td class="cella-calendario {{ cella.stato }}">
+                            {# cliccando uno slot libero si va dritti al form di prenotazione con data e ora già preselezionate #}
+                            {% if cella.stato == 'libero' and puo_prenotare and cella.data >= oggi %}
+                                <a class="cella-link"
+                                   href="{% url 'prenotazioni:nuova' %}?data={{ cella.data|date:'Y-m-d' }}&ora={{ riga.ora_inizio|time:'H:i' }}"
+                                   aria-label="Prenota {{ cella.data|date:'d/m' }} dalle {{ riga.ora_inizio|time:'H:i' }}"></a>
+                            {% endif %}
+                            {# ogni "blocco" è un rettangolino con top/height in percentuale sull'ora: una prenotazione di 20 minuti colora solo un terzo della cella, non l'ora intera #}
+                            {% for blocco in cella.blocchi %}
+                                <span class="blocco-occupato" style="top:{{ blocco.top|unlocalize }}%;height:{{ blocco.altezza|unlocalize }}%;"></span>
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <p class="legenda">
+        <span class="cella-calendario libero"></span> Libero
+        <span class="cella-calendario occupato"></span> Occupato
+        <span class="cella-calendario chiuso"></span> Chiuso
+    </p>
+{% else %}
+    <p>Il campo è chiuso per l'intera settimana.</p>
+{% endif %}
+{% endblock %}
