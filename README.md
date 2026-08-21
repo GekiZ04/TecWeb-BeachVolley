@@ -1,21 +1,26 @@
-# VSBA — Volley Sassuolo Beach Arena
+# VSBA (Volley Sassuolo Beach Arena)
 
-Progetto d'esame per il corso di Tecnologie Web: un sito per gestire le prenotazioni di un campo da beach volley, ispirato al vero "Volley Sassuolo Beach Arena" di Sassuolo. È fatto con Django, e la parte di calendario/disponibilità è dinamica con javascript.
+Progetto d'esame per il corso di Tecnologie Web. Ho realizzato un sito per gestire le prenotazioni di un campo da beach volley, ispirato al vero "Volley Sassuolo Beach Arena" di Sassuolo. È fatto con Django, mentre la parte di calendario e disponibilità è dinamica grazie a un po' di JavaScript, senza framework aggiuntivi.
 
-Una cosa a cui tenevo particolarmente: le prenotazioni non sono bloccate all'ora esatta. Si può iniziare a qualsiasi quarto d'ora e scegliere una durata a piacere (da 15 minuti a 4 ore, sempre in multipli di 15), e il prezzo si calcola proporzionalmente. Se una prenotazione attraversa le 18:00 viene addirittura spezzata automaticamente tra tariffa diurna e serale.
+Ho fatto in modo che le prenotazioni non fossero bloccate all'ora esatta. Si può iniziare a qualsiasi quarto d'ora e scegliere una durata a piacere, da 15 minuti a 4 ore, sempre in multipli di 15 minuti, e il prezzo viene calcolato in proporzione. Se una prenotazione attraversa le 18:00, il costo viene diviso automaticamente tra tariffa diurna e serale.
 
-**Sulla grafica**: logo, foto del campo e sfondo in `static/img/` li ho presi dal sito ufficiale [volleysassuolo.com](https://volleysassuolo.com) (sezione Beach Arena).
+Per la grafica ho usato il logo, le foto del campo e lo sfondo che si trovano in `static/img/`. Li ho presi dal sito ufficiale [volleysassuolo.com](https://volleysassuolo.com), nella sezione Beach Arena.
 
 ## Chi può fare cosa
 
-- **Visitatore non registrato**: può solo guardare disponibilità, orari, servizi, prezzario.
-- **Cliente**: prenota, modifica o cancella le proprie prenotazioni, vede lo storico, si mette in lista d'attesa se uno slot è occupato e riceve notifiche dentro al sito.
-- **Gestore** (ce ne può essere più di uno): gestisce orari di apertura, prezzario, chiusure straordinarie e servizi. Le prenotazioni vengono assegnate in automatico al gestore che ne ha meno in carico, così il lavoro si distribuisce da solo.
-- **Admin**: fa tutto quello che fa un gestore, più la parte economica vede la propria quota (40% dell'incassato), il resoconto settimanale diviso per gestore, e può applicare uno sconto a una prenotazione specifica (visibile solo al cliente coinvolto, non agli altri).
+Ho previsto quattro livelli di accesso.
+
+Un visitatore non registrato può consultare disponibilità, orari, servizi e prezzario, ma non può prenotare.
+
+Un cliente può prenotare, modificare o cancellare le proprie prenotazioni, consultare lo storico, mettersi in lista d'attesa se uno slot è occupato e ricevere notifiche all'interno del sito.
+
+Un gestore, di cui può essercene più di uno, si occupa di orari di apertura, prezzario, chiusure straordinarie e servizi. Le prenotazioni vengono assegnate automaticamente al gestore che ne ha in carico di meno, così il lavoro si distribuisce da solo.
+
+Un admin ha tutte le funzioni di un gestore, oltre alla parte economica: vede la propria quota (il 40% dell'incassato), può generare il resoconto settimanale diviso per gestore e può applicare uno sconto a una prenotazione specifica, visibile solo al cliente coinvolto.
 
 ## Come avviarlo
 
-Python 3.12 e [pipenv](https://pipenv.pypa.io/) (`pip install pipenv`).
+Serve Python 3.12 e pipenv (si installa con `pip install pipenv`).
 
 ```bash
 pipenv install
@@ -24,13 +29,13 @@ pipenv run python manage.py seed_demo_data
 pipenv run python manage.py runserver
 ```
 
-Poi il sito è su http://127.0.0.1:8000/.
+Il sito sarà raggiungibile su http://127.0.0.1:8000/.
 
-Se preferisci, da Git Bash c'è anche `./run.sh` che fa tutto questo da solo. Per l'elenco di tutti i comandi utili  **[COMANDI.md](COMANDI.md)**.
+In alternativa, da terminale (Git Bash su Windows, oppure il Terminale su Mac e Linux) si può usare lo script `./run.sh`, che esegue tutti questi passaggi in automatico. L'elenco completo dei comandi utili è nel file [COMANDI.md](COMANDI.md).
 
 ## Credenziali per provare il sito
 
-Le crea `seed_demo_data` (si può rilanciare quante volte si vuole, non duplica niente):
+Vengono create dal comando `seed_demo_data`, che può essere rilanciato quante volte serve senza creare duplicati.
 
 | Ruolo    | Username   | Password       |
 |----------|------------|----------------|
@@ -40,7 +45,7 @@ Le crea `seed_demo_data` (si può rilanciare quante volte si vuole, non duplica 
 | Cliente  | `cliente1`  | `cliente12345`  |
 | Cliente  | `cliente2`  | `cliente12345`  |
 
-Lo stesso comando riempie anche il prezzario, gli orari (tutti i giorni 08:00–00:00) e un paio di servizi, e crea due prenotazioni di esempio per il giorno dopo — così appena apri il sito trovi già uno slot occupato, puoi provare la lista d'attesa e c'è già qualcosa nel resoconto economico, senza doverlo configurare a mano.
+Lo stesso comando crea anche il prezzario, gli orari di apertura (tutti i giorni dalle 08:00 alle 00:00) e un paio di servizi, oltre a due prenotazioni di esempio per il giorno successivo. In questo modo, appena si apre il sito, si trova già uno slot occupato ed è possibile provare subito la lista d'attesa e il resoconto economico.
 
 ## Test
 
@@ -50,11 +55,13 @@ pipenv run python manage.py test
 
 ## Struttura del progetto
 
-Tre app Django, divise per responsabilità:
+Il progetto è diviso in tre app Django, ciascuna con una propria responsabilità.
 
-- `accounts/` — l'utente custom con i tre ruoli, registrazione, login/logout.
-- `struttura/` — tutto ciò che riguarda il campo in sé: orari, chiusure straordinarie, prezzario, calcolo di quali slot sono liberi.
-- `prenotazioni/` — le prenotazioni vere e proprie, lista d'attesa, notifiche, calcolo dei prezzi, dashboard economica.
+L'app `accounts` gestisce l'utente personalizzato con i tre ruoli, la registrazione e il login/logout.
+
+L'app `struttura` si occupa di tutto ciò che riguarda il campo: orari, chiusure straordinarie, prezzario e calcolo degli slot disponibili.
+
+L'app `prenotazioni` gestisce le prenotazioni vere e proprie, la lista d'attesa, le notifiche, il calcolo dei prezzi e la dashboard economica.
 
 ## Documentazione del codice
 
@@ -62,12 +69,14 @@ Tre app Django, divise per responsabilità:
 pipenv run python manage.py genera_documentazione
 ```
 
-Legge le docstring sparse nel codice e genera una documentazione HTML navigabile (uso [pdoc](https://pdoc.dev/) sotto il cofano) dentro `documentazione/` — basta aprire `documentazione/index.html`.
+Questo comando legge le docstring presenti nel codice e genera una documentazione HTML navigabile, tramite [pdoc](https://pdoc.dev/), nella cartella `documentazione/`. Basta aprire `documentazione/index.html` per consultarla.
 
 ## Note di sicurezza
 
-Alcune scelte fatte per comodità in locale, da NON portarsi dietro se questo diventasse mai un progetto vero:
+Alcune scelte fatte per comodità in locale non andrebbero portate in un eventuale progetto reale.
 
-- La `SECRET_KEY` è scritta in chiaro in `beachvolley/settings.py`. Per un progetto d'esame che gira solo sul mio PC va benissimo così, ma in un deploy reale andrebbe rigenerata e tenuta fuori dal repository.
-- `DEBUG = True` e `ALLOWED_HOSTS = ['*']` (sempre in `settings.py`) servono a poter condividere il sito in locale, ad esempio con un tunnel SSH per farlo vedere a qualcuno senza deployarlo davvero. Da restringere se il sito restasse online stabilmente.
-- Le password demo (`admin12345` ecc.) sono volutamente semplici, giusto per fare prima durante i test.
+La `SECRET_KEY` è scritta in chiaro in `beachvolley/settings.py`. Per un progetto d'esame che gira solo sul mio computer va bene così, ma in un deploy vero andrebbe rigenerata e tenuta fuori dal repository.
+
+`DEBUG = True` e `ALLOWED_HOSTS = ['*']`, sempre in `settings.py`, servono a poter condividere il sito in locale, ad esempio tramite un tunnel SSH, senza doverlo effettivamente pubblicare online. Andrebbero ristretti se il sito restasse esposto in modo stabile.
+
+Le password demo, come `admin12345`, sono volutamente semplici per rendere più rapidi i test.
