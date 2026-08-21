@@ -7,6 +7,7 @@ app_name = 'struttura'
 
 urlpatterns = [
     path('disponibilita/', views.disponibilita_json, name='disponibilita_json'),
+    path('calendario/', views.calendario_ajax, name='calendario_ajax'),
     path('gestore/', views.dashboard, name='dashboard'),
     path('gestore/orari/', views.salva_orari, name='salva_orari'),
     path('gestore/tariffa/', views.salva_tariffa, name='salva_tariffa'),

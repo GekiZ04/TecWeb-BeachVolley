@@ -1,0 +1,46 @@
+{% load l10n %}
+{# Frammento riutilizzato sia dalla home (al primo caricamento, tramite include) sia dall'endpoint AJAX struttura:calendario_ajax quando si cambia settimana: così il markup del calendario è scritto una volta sola. #}
+<p>
+    <a class="btn btn-secondary calendario-nav" href="?inizio={{ settimana_prec|date:'Y-m-d' }}" data-inizio="{{ settimana_prec|date:'Y-m-d' }}">&larr; Settimana precedente</a>
+    <a class="btn btn-secondary calendario-nav" href="?inizio={{ settimana_succ|date:'Y-m-d' }}" data-inizio="{{ settimana_succ|date:'Y-m-d' }}">Settimana successiva &rarr;</a>
+</p>
+{% if calendario.righe %}
+    <div class="calendario-settimanale-wrapper">
+        <table class="calendario-settimanale">
+            <thead>
+                <tr>
+                    <th></th>
+                    {% for giorno in calendario.giorni %}
+                        <th>{{ giorno|date:"D" }}<br>{{ giorno|date:"d/m" }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for riga in calendario.righe %}
+                <tr>
+                    <th>{{ riga.ora_inizio|time:"H:i" }}</th>
+                    {% for cella in riga.celle %}
+                        <td class="cella-calendario {{ cella.stato }}">
+                            {% if cella.stato == 'libero' and puo_prenotare and cella.data >= oggi %}
+                                <a class="cella-link"
+                                   href="{% url 'prenotazioni:nuova' %}?data={{ cella.data|date:'Y-m-d' }}&ora={{ riga.ora_inizio|time:'H:i' }}"
+                                   aria-label="Prenota {{ cella.data|date:'d/m' }} dalle {{ riga.ora_inizio|time:'H:i' }}"></a>
+                            {% endif %}
+                            {% for blocco in cella.blocchi %}
+                                <span class="blocco-occupato" style="top:{{ blocco.top|unlocalize }}%;height:{{ blocco.altezza|unlocalize }}%;"></span>
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <p class="legenda">
+        <span class="cella-calendario libero"></span> Libero
+        <span class="cella-calendario occupato"></span> Occupato
+        <span class="cella-calendario chiuso"></span> Chiuso
+    </p>
+{% else %}
+    <p>Il campo è chiuso per l'intera settimana.</p>
+{% endif %}

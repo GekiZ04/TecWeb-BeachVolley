@@ -54,50 +54,11 @@
 <p>Oltre {{ tariffa.soglia_partecipanti }} partecipanti: + € {{ tariffa.sovrapprezzo_persona_extra }} a persona.</p>
 
 <h2>Disponibilità della settimana</h2>
-<p>
-    <a class="btn btn-secondary" href="?inizio={{ settimana_prec|date:'Y-m-d' }}">&larr; Settimana precedente</a>
-    <a class="btn btn-secondary" href="?inizio={{ settimana_succ|date:'Y-m-d' }}">Settimana successiva &rarr;</a>
-</p>
-{% if calendario.righe %}
-    <div class="calendario-settimanale-wrapper">
-        <table class="calendario-settimanale">
-            <thead>
-                <tr>
-                    <th></th>
-                    {% for giorno in calendario.giorni %}
-                        <th>{{ giorno|date:"D" }}<br>{{ giorno|date:"d/m" }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-            {% for riga in calendario.righe %}
-                <tr>
-                    <th>{{ riga.ora_inizio|time:"H:i" }}</th>
-                    {% for cella in riga.celle %}
-                        <td class="cella-calendario {{ cella.stato }}">
-                            {# cliccando uno slot libero si va dritti al form di prenotazione con data e ora già preselezionate #}
-                            {% if cella.stato == 'libero' and puo_prenotare and cella.data >= oggi %}
-                                <a class="cella-link"
-                                   href="{% url 'prenotazioni:nuova' %}?data={{ cella.data|date:'Y-m-d' }}&ora={{ riga.ora_inizio|time:'H:i' }}"
-                                   aria-label="Prenota {{ cella.data|date:'d/m' }} dalle {{ riga.ora_inizio|time:'H:i' }}"></a>
-                            {% endif %}
-                            {# ogni "blocco" è un rettangolino con top/height in percentuale sull'ora: una prenotazione di 20 minuti colora solo un terzo della cella, non l'ora intera #}
-                            {% for blocco in cella.blocchi %}
-                                <span class="blocco-occupato" style="top:{{ blocco.top|unlocalize }}%;height:{{ blocco.altezza|unlocalize }}%;"></span>
-                            {% endfor %}
-                        </td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <p class="legenda">
-        <span class="cella-calendario libero"></span> Libero
-        <span class="cella-calendario occupato"></span> Occupato
-        <span class="cella-calendario chiuso"></span> Chiuso
-    </p>
-{% else %}
-    <p>Il campo è chiuso per l'intera settimana.</p>
-{% endif %}
+{# lo scorrimento tra settimane avviene via AJAX (static/js/calendario.js): il JS sostituisce solo il contenuto di questo div, senza ricaricare tutta la pagina #}
+<div id="calendario-wrapper" data-endpoint="{% url 'struttura:calendario_ajax' %}">
+    {% include "struttura/_calendario.html" %}
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/calendario.js' %}"></script>
 {% endblock %}

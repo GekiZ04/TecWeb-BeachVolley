@@ -185,6 +185,25 @@ class CalendarioClickabileTests(TestCase):
         self.assertNotContains(response, 'cella-link')
 
 
+class CalendarioAjaxTests(TestCase):
+    """L'endpoint usato da static/js/calendario.js per scorrere le settimane senza
+    ricaricare la pagina: deve ritornare solo il frammento del calendario, non la pagina intera."""
+
+    def test_ritorna_solo_il_frammento_non_la_pagina_intera(self):
+        response = self.client.get(reverse('struttura:calendario_ajax'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'calendario-settimanale')
+        # se contenesse la navbar o il <!DOCTYPE>, vorrebbe dire che sta renderizzando
+        # l'intera pagina invece del solo frammento
+        self.assertNotContains(response, '<!DOCTYPE')
+        self.assertNotContains(response, 'class="navbar"')
+
+    def test_rispetta_il_parametro_inizio(self):
+        lunedi = datetime.date(2026, 7, 27)
+        response = self.client.get(reverse('struttura:calendario_ajax'), {'inizio': lunedi.isoformat()})
+        self.assertContains(response, lunedi.strftime('%d/%m'))
+
+
 class DisponibilitaJsonTests(TestCase):
     """L'endpoint AJAX usato dal form di prenotazione, in particolare il parametro
     "escludi" che alla pagina di modifica serve per mostrare come libero lo slot della

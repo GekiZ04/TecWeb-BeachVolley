@@ -40,6 +40,21 @@ def _assicura_orari_default():
                 OrarioApertura.objects.create(giorno_settimana=giorno)
 
 
+def _contesto_calendario(request, lunedi):
+    """Il contesto per renderizzare struttura/_calendario.html: usato sia dalla home
+    (primo caricamento) sia da calendario_ajax (scorrimento tra settimane), così i due
+    non ricalcolano la stessa cosa in due modi diversi."""
+    return {
+        'calendario': calendario_settimana(lunedi),
+        'settimana_prec': lunedi - datetime.timedelta(days=7),
+        'settimana_succ': lunedi + datetime.timedelta(days=7),
+        # un gestore/admin che guarda il calendario non deve poter cliccare gli slot —
+        # solo un cliente (o un visitatore non loggato, che finirà comunque al login) può farlo
+        'puo_prenotare': not request.user.is_authenticated or request.user.is_cliente,
+        'oggi': timezone.localdate(),
+    }
+
+
 def home(request):
     """Pagina pubblica: presentazione della struttura, servizi, orari, prezzario e il
     calendario settimanale (cliccabile solo per chi può prenotare)."""
@@ -51,14 +66,18 @@ def home(request):
         'orari': OrarioApertura.objects.all(),
         'tariffa': Tariffa.get_attuale(),
         'lunedi': lunedi,
-        'calendario': calendario_settimana(lunedi),
-        'settimana_prec': lunedi - datetime.timedelta(days=7),
-        'settimana_succ': lunedi + datetime.timedelta(days=7),
-        # un gestore/admin che guarda il calendario non deve poter cliccare gli slot —
-        # solo un cliente (o un visitatore non loggato, che finirà comunque al login) può farlo
-        'puo_prenotare': not request.user.is_authenticated or request.user.is_cliente,
-        'oggi': timezone.localdate(),
+        **_contesto_calendario(request, lunedi),
     })
+
+
+def calendario_ajax(request):
+    """Endpoint AJAX chiamato da static/js/calendario.js quando si clicca "settimana
+    precedente/successiva" in home: ricalcola solo la settimana richiesta e ritorna il
+    frammento HTML del calendario (non l'intera pagina), così scorrere le settimane non
+    ricarica tutto il sito."""
+    _assicura_orari_default()
+    lunedi = _parse_lunedi(request)
+    return render(request, 'struttura/_calendario.html', _contesto_calendario(request, lunedi))
 
 
 def disponibilita_json(request):
