@@ -1,2 +1,2 @@
 # TecWeb-BeachVolley
-Webapp per prenotazioniu campo beach volley VSBA
+Webapp per prenotazioni campo beach volley VSBA
