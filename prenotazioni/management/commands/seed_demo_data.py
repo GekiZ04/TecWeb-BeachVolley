@@ -17,6 +17,8 @@ DEMO_USERS = [
     ('gestore2', 'gestore12345', User.Ruolo.GESTORE, False, False),
     ('cliente1', 'cliente12345', User.Ruolo.CLIENTE, False, False),
     ('cliente2', 'cliente12345', User.Ruolo.CLIENTE, False, False),
+    ('capodieci', 'nicola', User.Ruolo.CLIENTE, False, False),
+    ('zanini', 'giacomo', User.Ruolo.GESTORE, False, False),
 ]
 
 
