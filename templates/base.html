@@ -24,7 +24,7 @@
                 <a href="{% url 'struttura:dashboard' %}">Area gestore</a>
             {% endif %}
             {% if user.is_admin_struttura %}
-                <a href="{% url 'prenotazioni:economia' %}">Economia</a>
+                <a href="{% url 'prenotazioni:economia' %}">Resoconto</a>
                 <a href="{% url 'accounts:gestione_utenti' %}">Gestione utenti</a>
             {% endif %}
             <a href="{% url 'prenotazioni:notifiche' %}" class="notif-link">Notifiche
