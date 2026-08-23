@@ -12,21 +12,13 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Chiave che Django usa per firmare sessioni, cookie, token CSRF ecc. Di solito si tiene
-# fuori dal repository, ma per un progetto d'esame che gira solo sul mio pc non vale la
-# pena complicarsi la vita con file .env: se mai dovesse finire online per davvero,
-# andrebbe rigenerata.
+# Chiave che Django usa per firmare sessioni, cookie, token CSRF ecc.
 SECRET_KEY = 'django-insecure-cth4gk!8c3@(q&9f$@^m+s+!nm#u9nridxb9b2u7b%qd-gc$lt'
 
-DEBUG = True  # in sviluppo tenerlo acceso aiuta parecchio a leggere gli errori
+DEBUG = True
 
-# '*' accetta richieste con qualunque Host. Mi serve perché ogni tanto condivido il sito
-# in locale con un tunnel SSH (localhost.run), che lo espone con un dominio diverso ogni volta.
-ALLOWED_HOSTS = ['*']
-
-# Senza questa riga, quando il sito passa dal tunnel (che è in HTTPS), Django rifiuta i
-# form POST — login, prenotazioni, ecc. — con un errore "Origin checking failed".
-CSRF_TRUSTED_ORIGINS = ['https://*.lhr.life']
+# Il server di sviluppo viene usato solo dalla macchina locale.
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 INSTALLED_APPS = [

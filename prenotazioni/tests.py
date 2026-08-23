@@ -93,8 +93,8 @@ class PrenotazioneModelTests(TestCase):
             utente=self.cliente, data=timezone.localdate(), ora_inizio=datetime.time(10, 0),
             ora_fine=datetime.time(11, 0), prezzo_listino=Decimal('100'),
         )
-        self.assertEqual(p.quota_admin, Decimal('40.00'))
-        self.assertEqual(p.quota_gestore, Decimal('60.00'))
+        self.assertEqual(p.quota_admin, Decimal('60.00'))
+        self.assertEqual(p.quota_gestore, Decimal('40.00'))
 
     def test_durata_minuti(self):
         p = Prenotazione.objects.create(

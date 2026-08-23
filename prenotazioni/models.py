@@ -8,7 +8,7 @@ from django.db import models
 
 from struttura.time_utils import minuti_dalla_mezzanotte
 
-QUOTA_ADMIN = Decimal('0.40')  # percentuale che spetta all'admin su ogni prenotazione
+QUOTA_ADMIN = Decimal('0.60')  # percentuale che spetta all'admin su ogni prenotazione
 PARTECIPANTI_MASSIMO = 50
 
 
@@ -62,12 +62,12 @@ class Prenotazione(models.Model):
 
     @property
     def quota_admin(self):
-        """Il 40% dell'incassato, che va all'admin (valore dalla proposta di progetto)."""
+        """Il 60% dell'incassato, che va all'admin ."""
         return (self.importo_dovuto * QUOTA_ADMIN).quantize(Decimal('0.01'))
 
     @property
     def quota_gestore(self):
-        """Il restante 60%, per il gestore che si è preso in carico la prenotazione."""
+        """Il restante 40%, per il gestore che si è preso in carico la prenotazione."""
         return self.importo_dovuto - self.quota_admin
 
     @property

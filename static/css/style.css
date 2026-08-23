@@ -257,15 +257,15 @@ td.cella-calendario {
     overflow: hidden;
 }
 
-.cella-calendario.libero { background: #cdeed7; }
-.cella-calendario.occupato { background: #f8c9c9; }
+.cella-calendario.libero { background: #d7e0fb; }
+.cella-calendario.occupato { background: #fff2c2; }
 .cella-calendario.chiuso { background: #e4e4e8; }
 
 .blocco-occupato {
     position: absolute;
     left: 2px;
     right: 2px;
-    background: #ef8f8f;
+    background: var(--vsba-yellow);
     border-radius: 2px;
 }
 

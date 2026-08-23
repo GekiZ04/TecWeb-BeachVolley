@@ -16,7 +16,7 @@ Un cliente può prenotare, modificare o cancellare le proprie prenotazioni, cons
 
 Un gestore, di cui può essercene più di uno, si occupa di orari di apertura, prezzario, chiusure straordinarie e servizi. Le prenotazioni vengono assegnate automaticamente al gestore che ne ha in carico di meno, così il lavoro si distribuisce da solo.
 
-Un admin ha tutte le funzioni di un gestore, oltre alla parte economica: vede la propria quota (il 40% dell'incassato), può generare il resoconto settimanale diviso per gestore e può applicare uno sconto a una prenotazione specifica, visibile solo al cliente coinvolto.
+Un admin ha tutte le funzioni di un gestore, oltre alla parte economica: vede la propria quota (il 60% dell'incassato), può generare il resoconto settimanale diviso per gestore e può applicare uno sconto a una prenotazione specifica, visibile solo al cliente coinvolto.
 
 ## Come avviarlo
 
@@ -77,6 +77,6 @@ Alcune scelte fatte per comodità in locale non andrebbero portate in un eventua
 
 La `SECRET_KEY` è scritta in chiaro in `beachvolley/settings.py`. Per un progetto d'esame che gira solo sul mio computer va bene così, ma in un deploy vero andrebbe rigenerata e tenuta fuori dal repository.
 
-`DEBUG = True` e `ALLOWED_HOSTS = ['*']`, sempre in `settings.py`, servono a poter condividere il sito in locale, ad esempio tramite un tunnel SSH, senza doverlo effettivamente pubblicare online. Andrebbero ristretti se il sito restasse esposto in modo stabile.
+`DEBUG = True` in `settings.py` è utile durante lo sviluppo locale. In un eventuale deploy reale andrebbe impostato a `False`.
 
 Le password demo, come `admin12345`, sono volutamente semplici per rendere più rapidi i test.
