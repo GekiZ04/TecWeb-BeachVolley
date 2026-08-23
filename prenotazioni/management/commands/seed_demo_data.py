@@ -6,6 +6,7 @@ from django.utils import timezone
 
 from prenotazioni import services
 from struttura.models import Campo, OrarioApertura, Servizio, Tariffa
+from struttura.services import intervallo_disponibile
 
 User = get_user_model()
 
@@ -74,5 +75,42 @@ class Command(BaseCommand):
         if not services.slot_occupato(domani, datetime.time(19, 0), datetime.time(20, 0)):
             services.crea_prenotazione(cliente2, domani, datetime.time(19, 0), datetime.time(20, 0), True, 10)
             self.stdout.write(self.style.SUCCESS('Creata prenotazione demo: cliente2, domani 19:00-20:00 (con spogliatoio, 10 partecipanti)'))
+
+        # Riempie il calendario delle prossime settimane (fino al 15 settembre) con
+        # qualche prenotazione sparsa, così il calendario della home e il resoconto
+        # economico hanno più di due slot occupati da mostrare. Un martedì, un venerdì e
+        # un sabato a settimana, alternando i clienti demo e fascia diurna/serale.
+        capodieci = User.objects.get(username='capodieci')
+        clienti_demo = [cliente1, cliente2, capodieci]
+
+        oggi = timezone.localdate()
+        fine_periodo = datetime.date(oggi.year, 9, 15)
+        if fine_periodo < oggi:
+            # se il comando gira dopo il 15 settembre, punta a quello dell'anno prossimo
+            fine_periodo = datetime.date(oggi.year + 1, 9, 15)
+
+        slot_per_giorno_settimana = {
+            1: (datetime.time(10, 0), datetime.time(11, 30), False, 4),   # martedì, diurno
+            4: (datetime.time(18, 0), datetime.time(19, 30), True, 6),    # venerdì, a cavallo diurno/serale
+            5: (datetime.time(20, 0), datetime.time(21, 30), True, 10),   # sabato sera
+        }
+
+        contatore = 0
+        totale_create = 0
+        giorno = domani
+        while giorno <= fine_periodo:
+            slot = slot_per_giorno_settimana.get(giorno.weekday())
+            if slot:
+                ora_inizio, ora_fine, spogliatoio, partecipanti = slot
+                cliente = clienti_demo[contatore % len(clienti_demo)]
+                contatore += 1
+                if intervallo_disponibile(giorno, ora_inizio, ora_fine):
+                    services.crea_prenotazione(cliente, giorno, ora_inizio, ora_fine, spogliatoio, partecipanti)
+                    totale_create += 1
+            giorno += datetime.timedelta(days=1)
+
+        self.stdout.write(self.style.SUCCESS(
+            f'Aggiunte {totale_create} prenotazioni demo fino al {fine_periodo.strftime("%d/%m/%Y")}.'
+        ))
 
         self.stdout.write(self.style.SUCCESS('Dati demo pronti.'))
