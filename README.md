@@ -73,12 +73,10 @@ pipenv run python manage.py genera_documentazione
 
 Questo comando legge le docstring presenti nel codice e genera una documentazione HTML navigabile, tramite [pdoc](https://pdoc.dev/), nella cartella `documentazione/`. Basta aprire `documentazione/index.html` per consultarla.
 
-## Note di sicurezza
+## Note
 
-Alcune scelte fatte per comodità in locale non andrebbero portate in un eventuale progetto reale.
+Il progetto è pensato per girare solo in locale, sul mio computer: non c'è nessuna configurazione per pubblicarlo online.
 
-La `SECRET_KEY` è scritta in chiaro in `beachvolley/settings.py`. Per un progetto d'esame che gira solo sul mio computer va bene così, ma in un deploy vero andrebbe rigenerata e tenuta fuori dal repository.
-
-`DEBUG = True` in `settings.py` è utile durante lo sviluppo locale. In un eventuale deploy reale andrebbe impostato a `False`.
+La `SECRET_KEY` è scritta in chiaro in `beachvolley/settings.py` e `DEBUG = True`: per un sito che gira solo in locale va bene così.
 
 Le password demo, come `admin12345`, sono volutamente semplici per rendere più rapidi i test.

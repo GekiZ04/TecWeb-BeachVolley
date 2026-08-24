@@ -52,7 +52,6 @@ pipenv run python manage.py seed_demo_data  # crea utenti e dati demo (vedi READ
 | `shell` | Apre una shell Python con l'app Django già caricata (utile per query manuali sul database). |
 | `createsuperuser` | Crea un utente amministratore da terminale, con prompt interattivi. |
 | `changepassword <username>` | Cambia la password di un utente da terminale. |
-| `collectstatic` | Raccoglie tutti i file statici (CSS/JS/immagini) in un'unica cartella, per il deploy in produzione. |
 
 Esempi:
 
