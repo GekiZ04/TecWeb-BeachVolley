@@ -79,4 +79,6 @@ Il progetto è pensato per girare solo in locale, sul mio computer: non c'è nes
 
 La `SECRET_KEY` è scritta in chiaro in `beachvolley/settings.py` e `DEBUG = True`: per un sito che gira solo in locale va bene così.
 
+Il file `db.sqlite3` è incluso nel repository (di solito è una pratica sbagliata, un database non andrebbe versionato con git). L'ho lasciato dentro di proposito, solo per questo progetto d'esame, così chi clona la repository trova già i dati popolati da vedere, senza dover rilanciare `seed_demo_data` a mano.
+
 Le password demo, come `admin12345`, sono volutamente semplici per rendere più rapidi i test.
