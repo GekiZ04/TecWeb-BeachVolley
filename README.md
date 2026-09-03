@@ -44,8 +44,6 @@ Vengono create dal comando `seed_demo_data`, che può essere rilanciato quante v
 | Gestore  | `gestore2`  | `gestore12345`  |
 | Cliente  | `cliente1`  | `cliente12345`  |
 | Cliente  | `cliente2`  | `cliente12345`  |
-| Capodieci| `capodieci` | `nicola`        |
-| Zanini   | `zanini`    | `giacomo`       |
 
 Lo stesso comando crea anche il prezzario, gli orari di apertura (tutti i giorni dalle 08:00 alle 00:00) e un paio di servizi, oltre a due prenotazioni di esempio per il giorno successivo. In questo modo, appena si apre il sito, si trova già uno slot occupato ed è possibile provare subito la lista d'attesa e il resoconto economico.
 

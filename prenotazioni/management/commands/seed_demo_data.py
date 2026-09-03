@@ -18,8 +18,6 @@ DEMO_USERS = [
     ('gestore2', 'gestore12345', User.Ruolo.GESTORE, False, False),
     ('cliente1', 'cliente12345', User.Ruolo.CLIENTE, False, False),
     ('cliente2', 'cliente12345', User.Ruolo.CLIENTE, False, False),
-    ('capodieci', 'nicola', User.Ruolo.CLIENTE, False, False),
-    ('zanini', 'giacomo', User.Ruolo.GESTORE, False, False),
 ]
 
 
@@ -80,8 +78,7 @@ class Command(BaseCommand):
         # qualche prenotazione sparsa, così il calendario della home e il resoconto
         # economico hanno più di due slot occupati da mostrare. Un martedì, un venerdì e
         # un sabato a settimana, alternando i clienti demo e fascia diurna/serale.
-        capodieci = User.objects.get(username='capodieci')
-        clienti_demo = [cliente1, cliente2, capodieci]
+        clienti_demo = [cliente1, cliente2]
 
         oggi = timezone.localdate()
         fine_periodo = datetime.date(oggi.year, 9, 15)
