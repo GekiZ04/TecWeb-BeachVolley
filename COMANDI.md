@@ -41,7 +41,7 @@ pipenv run python manage.py seed_demo_data  # crea utenti e dati demo (vedi READ
 | `pipenv run python manage.py elenca_utenti` | Interroga il database e stampa tutti gli utenti registrati con username, ruolo, email, data di registrazione e ultimo accesso. |
 | `pipenv run python manage.py genera_documentazione` | Genera la documentazione HTML del progetto (dalle docstring, via pdoc) nella cartella `documentazione/`. Richiede `pipenv install --dev`. |
 
-## `manage.py` — comandi Django più usati
+## `manage.py`: comandi Django più usati
 
 | Comando | Cosa fa |
 |---|---|
@@ -64,7 +64,7 @@ pipenv run python manage.py test struttura        # solo i test di un'app
 pipenv run python manage.py shell
 ```
 
-## `manage.py` — comandi meno comuni / diagnostica
+## `manage.py`: comandi meno comuni / diagnostica
 
 | Comando | Cosa fa |
 |---|---|

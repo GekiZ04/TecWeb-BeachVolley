@@ -18,7 +18,7 @@ def minuti_dalla_mezzanotte(ora, fine_giornata=False):
 
 def si_sovrappongono(inizio_a, fine_a, inizio_b, fine_b):
     """True se i due intervalli [inizio_a, fine_a) e [inizio_b, fine_b), dello stesso
-    giorno, si sovrappongono — gestendo il caso in cui una delle due "fine" sia in realtà
+    giorno, si sovrappongono, gestendo il caso in cui una delle due "fine" sia in realtà
     la mezzanotte (00:00 = fine giornata, non inizio)."""
     a_inizio = minuti_dalla_mezzanotte(inizio_a)
     a_fine = minuti_dalla_mezzanotte(fine_a, fine_giornata=True)

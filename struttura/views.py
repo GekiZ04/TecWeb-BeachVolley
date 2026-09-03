@@ -48,7 +48,7 @@ def _contesto_calendario(request, lunedi):
         'calendario': calendario_settimana(lunedi),
         'settimana_prec': lunedi - datetime.timedelta(days=7),
         'settimana_succ': lunedi + datetime.timedelta(days=7),
-        # un gestore/admin che guarda il calendario non deve poter cliccare gli slot —
+        # un gestore/admin che guarda il calendario non deve poter cliccare gli slot:
         # solo un cliente (o un visitatore non loggato, che finirà comunque al login) può farlo
         'puo_prenotare': not request.user.is_authenticated or request.user.is_cliente,
         'oggi': timezone.localdate(),
@@ -83,7 +83,7 @@ def calendario_ajax(request):
 def disponibilita_json(request):
     """Endpoint AJAX chiamato da static/js/disponibilita.js: ritorna in JSON gli slot
     disponibili per una data. Il parametro "escludi" serve alla pagina di modifica, per
-    mostrare come libero lo slot della prenotazione che si sta modificando — ma solo se è
+    mostrare come libero lo slot della prenotazione che si sta modificando, ma solo se è
     dell'utente che sta facendo la richiesta, altrimenti basterebbe conoscere l'id per far
     apparire libera una prenotazione altrui."""
     valore = request.GET.get('data')
@@ -157,7 +157,7 @@ def salva_orari(request):
 
 @gestore_or_admin_required
 def salva_tariffa(request):
-    """Aggiorna il prezzario in vigore — vale solo per le prenotazioni future."""
+    """Aggiorna il prezzario in vigore: vale solo per le prenotazioni future."""
     if request.method == 'POST':
         form = TariffaForm(request.POST, instance=Tariffa.get_attuale())
         if form.is_valid():

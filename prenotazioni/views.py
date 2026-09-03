@@ -124,7 +124,7 @@ def iscrivi_lista_attesa(request):
 @login_required
 def mie_prenotazioni(request):
     """Storico personale: separa le prenotazioni future e confermate ("prossime") dal
-    resto — passate o cancellate — che finisce nello "storico"."""
+    resto, passate o cancellate, che finisce nello "storico"."""
     oggi = timezone.localdate()
     qs = Prenotazione.objects.filter(utente=request.user)
     prossime = [p for p in qs if p.stato == Prenotazione.Stato.CONFERMATA and p.data >= oggi]
@@ -137,7 +137,7 @@ def modifica_prenotazione(request, pk):
     """Modifica di una prenotazione esistente. Il filtro utente=request.user dentro
     get_object_or_404 fa sì che un cliente possa modificare solo le proprie: se prova
     l'id di una prenotazione altrui prende un 404 come se non esistesse, non un errore
-    di permesso — così non capisce nemmeno che quell'id è valido."""
+    di permesso, così non capisce nemmeno che quell'id è valido."""
     prenotazione = get_object_or_404(Prenotazione, pk=pk, utente=request.user)
     oggi = timezone.localdate()
     if prenotazione.stato != Prenotazione.Stato.CONFERMATA or prenotazione.data < oggi:

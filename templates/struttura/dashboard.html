@@ -99,7 +99,7 @@
                 <td>{{ p.data }}</td>
                 <td>{{ p.ora_inizio|time:"H:i" }}-{{ p.ora_fine|time:"H:i" }}</td>
                 <td>{{ p.utente }}</td>
-                <td>{{ p.gestore|default:"—" }}</td>
+                <td>{{ p.gestore|default:"-" }}</td>
                 <td>€ {{ p.importo_dovuto }}</td>
             </tr>
         {% empty %}

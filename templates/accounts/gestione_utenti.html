@@ -11,8 +11,8 @@
         {% for u in utenti %}
             <tr>
                 <td>{{ u.username }}</td>
-                <td>{{ u.get_full_name|default:"—" }}</td>
-                <td>{{ u.email|default:"—" }}</td>
+                <td>{{ u.get_full_name|default:"-" }}</td>
+                <td>{{ u.email|default:"-" }}</td>
                 <td>
                     <form method="post" class="inline-form-row">
                         {% csrf_token %}

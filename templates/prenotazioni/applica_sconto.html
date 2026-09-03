@@ -2,7 +2,7 @@
 {% block title %}Applica sconto{% endblock %}
 {% block content %}
 <h1>Applica sconto</h1>
-<p>Prenotazione di {{ prenotazione.utente }} — {{ prenotazione.data }} {{ prenotazione.ora_inizio|time:"H:i" }}-{{ prenotazione.ora_fine|time:"H:i" }}</p>
+<p>Prenotazione di {{ prenotazione.utente }}: {{ prenotazione.data }} {{ prenotazione.ora_inizio|time:"H:i" }}-{{ prenotazione.ora_fine|time:"H:i" }}</p>
 <p>Prezzo di listino: € {{ prenotazione.prezzo_listino }}</p>
 <form method="post" class="form">
     {% csrf_token %}

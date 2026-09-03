@@ -6,7 +6,7 @@
     <ul class="messages">
         {% for n in notifiche %}
             <li class="message {% if not n.letta %}info{% endif %}">
-                {{ n.creato_il|date:"d/m/Y H:i" }} — {{ n.messaggio }}
+                {{ n.creato_il|date:"d/m/Y H:i" }}: {{ n.messaggio }}
                 {% if n.link %}<a href="{{ n.link }}">Vai</a>{% endif %}
             </li>
         {% endfor %}

@@ -15,7 +15,7 @@ from .pricing import calcola_prezzo
 
 def assegna_gestore():
     """Sceglie il gestore con meno prenotazioni attive, così il carico si distribuisce da
-    solo tra tutti i gestori. A parità di prenotazioni vince l'id più basso — giusto per
+    solo tra tutti i gestori. A parità di prenotazioni vince l'id più basso, giusto per
     avere un risultato prevedibile e non un po' a caso."""
     from accounts.models import User
 
@@ -30,7 +30,7 @@ def assegna_gestore():
 
 def slot_occupato(data, ora_inizio, ora_fine, escludi_id=None):
     """Vero se esiste già una prenotazione confermata esattamente su questo slot (stessa
-    ora di inizio e fine — non rileva sovrapposizioni parziali come fa invece
+    ora di inizio e fine, non rileva sovrapposizioni parziali come fa invece
     struttura.services.intervallo_disponibile). Uso questa versione "semplice" solo in
     seed_demo_data, per non ricreare due volte la stessa prenotazione demo se il comando
     viene rilanciato."""
@@ -77,7 +77,7 @@ def modifica_prenotazione(prenotazione, data, ora_inizio, ora_fine, spogliatoio,
 
 def notifica_lista_attesa(data, ora_inizio, ora_fine):
     """Avvisa con una Notifica chi era in lista d'attesa per uno slot appena liberato, poi
-    lo toglie dalla coda — da lì in poi deve prenotare come chiunque altro, non c'è una
+    lo toglie dalla coda: da lì in poi deve prenotare come chiunque altro, non c'è una
     prenotazione automatica, vince chi conferma per primo."""
     # Confronto per sovrapposizione e non per corrispondenza esatta, perché la prenotazione
     # cancellata può avere una durata diversa da quella che ogni utente in coda si aspettava.
@@ -98,8 +98,8 @@ def notifica_lista_attesa(data, ora_inizio, ora_fine):
 
 
 def cancella_prenotazione(prenotazione):
-    """Cancella una prenotazione — senza eliminarla dal database, così ne resta lo storico
-    — e libera lo slot avvisando chi era in lista d'attesa."""
+    """Cancella una prenotazione, senza eliminarla dal database così ne resta lo storico,
+    e libera lo slot avvisando chi era in lista d'attesa."""
     prenotazione.stato = Prenotazione.Stato.CANCELLATA
     prenotazione.cancellata_il = timezone.now()
     prenotazione.save()

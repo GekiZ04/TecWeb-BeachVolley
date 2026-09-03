@@ -62,7 +62,7 @@ class Prenotazione(models.Model):
 
     @property
     def quota_admin(self):
-        """Il 60% dell'incassato, che va all'admin ."""
+        """Il 60% dell'incassato, che va all'admin."""
         return (self.importo_dovuto * QUOTA_ADMIN).quantize(Decimal('0.01'))
 
     @property

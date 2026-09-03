@@ -34,7 +34,7 @@ class User(AbstractUser):
     # gestore, dalla pagina "Gestione utenti" (vedi views.py).
     role = models.CharField(max_length=10, choices=Ruolo.choices, default=Ruolo.CLIENTE)
 
-    # Scorciatoie per non scrivere ovunque "utente.role == User.Ruolo.CLIENTE" — più
+    # Scorciatoie per non scrivere ovunque "utente.role == User.Ruolo.CLIENTE": più
     # leggibili sia nel codice che nei template.
 
     @property

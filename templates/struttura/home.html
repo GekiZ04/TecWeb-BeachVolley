@@ -24,7 +24,7 @@
 <h2>Servizi disponibili</h2>
 {% if servizi %}
     <ul>
-        {% for s in servizi %}<li><strong>{{ s.nome }}</strong>{% if s.descrizione %} — {{ s.descrizione }}{% endif %}</li>{% endfor %}
+        {% for s in servizi %}<li><strong>{{ s.nome }}</strong>{% if s.descrizione %}: {{ s.descrizione }}{% endif %}</li>{% endfor %}
     </ul>
 {% else %}
     <p>Nessun servizio elencato al momento.</p>

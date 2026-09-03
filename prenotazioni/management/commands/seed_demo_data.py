@@ -10,7 +10,7 @@ from struttura.services import intervallo_disponibile
 
 User = get_user_model()
 
-# ogni tupla è: (username, password, ruolo, is_staff, is_superuser) — solo l'admin ha
+# ogni tupla è: (username, password, ruolo, is_staff, is_superuser). Solo l'admin ha
 # is_staff/is_superuser a True, così può entrare anche in /django-admin/
 DEMO_USERS = [
     ('admin', 'admin12345', User.Ruolo.ADMIN, True, True),
@@ -24,7 +24,7 @@ DEMO_USERS = [
 
 
 class Command(BaseCommand):
-    """`python manage.py seed_demo_data` — popola il database con utenti demo, prezzario,
+    """`python manage.py seed_demo_data`: popola il database con utenti demo, prezzario,
     orari, servizi e un paio di prenotazioni di esempio, così il sito è subito navigabile
     senza doverlo configurare a mano ogni volta. È idempotente (usa get_or_create invece
     di create ovunque), quindi si può rilanciare tranquillamente senza creare doppioni."""

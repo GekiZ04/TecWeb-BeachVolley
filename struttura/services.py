@@ -61,7 +61,7 @@ CALENDARIO_STEP_MINUTI = 60
 
 def calendario_settimana(lunedi):
     """Costruisce la griglia settimanale mostrata in home (righe = ore, colonne = i 7 giorni
-    a partire da `lunedi`) — è una vista d'insieme, la prenotazione vera resta comunque a
+    a partire da `lunedi`): è una vista d'insieme, la prenotazione vera resta comunque a
     quarti d'ora. Ogni cella ha uno stato base (libero/chiuso, per tutta l'ora) più una
     lista di "blocchi" occupati con posizione e altezza in percentuale: così una
     prenotazione di 15 minuti non colora l'intera ora ma solo il pezzo che occupa davvero,

@@ -28,7 +28,7 @@ function popolaOrari(select, slots) {
     });
 }
 
-// Conta quanti quarti d'ora liberi ci sono uno dopo l'altro a partire dallo slot scelto —
+// Conta quanti quarti d'ora liberi ci sono uno dopo l'altro a partire dallo slot scelto:
 // mi serve per sapere fin dove ci si può allungare senza "scavalcare" uno slot occupato.
 function minutiLiberiConsecutivi(slots, indice) {
     let count = 0;
@@ -49,7 +49,7 @@ function formattaDurata(minuti) {
 }
 
 // Riempie il menù "Durata" con le opzioni valide (multipli di 15 minuti fino al massimo
-// consentito). Se c'è una durata preferita la seleziona — usato dalla pagina di modifica
+// consentito). Se c'è una durata preferita la seleziona: usato dalla pagina di modifica
 // per preselezionare la durata della prenotazione che si sta cambiando.
 function popolaDurate(select, maxMinuti, durataPreferita) {
     select.innerHTML = '';
@@ -89,8 +89,8 @@ function aggiornaOraFineESlotLabel(panel, data) {
 }
 
 // La funzione principale: parte ogni volta che si sceglie un orario dal menù (o quando
-// la pagina preseleziona uno slot da sola) e mostra il pannello giusto — prenotazione
-// se lo slot è libero, lista d'attesa se è occupato — preparandolo con i dati corretti.
+// la pagina preseleziona uno slot da sola) e mostra il pannello giusto: prenotazione
+// se lo slot è libero, lista d'attesa se è occupato, preparandolo con i dati corretti.
 function gestisciSelezioneOrario(container, data, slots, durataIniziale) {
     const select = container.querySelector('.orario-select');
     const scelto = select.value;

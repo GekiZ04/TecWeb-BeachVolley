@@ -1,4 +1,4 @@
-"""Form della dashboard gestore/admin — sono quasi tutti ModelForm "banali" (campi presi
+"""Form della dashboard gestore/admin: sono quasi tutti ModelForm "banali" (campi presi
 di peso dal modello), tranne il formset per gli orari."""
 
 from django import forms

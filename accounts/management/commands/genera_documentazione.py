@@ -101,7 +101,7 @@ def _scrivi_indice(cartella_output):
 
 
 class Command(BaseCommand):
-    """`python manage.py genera_documentazione` — legge le docstring del codice e genera
+    """`python manage.py genera_documentazione`: legge le docstring del codice e genera
     la documentazione HTML del progetto con pdoc (va nei dev-packages, quindi serve
     `pipenv install --dev` prima di usarlo). Il risultato finisce in "documentazione/"
     nella root, esclusa da git perché tanto si rigenera al volo quando serve."""

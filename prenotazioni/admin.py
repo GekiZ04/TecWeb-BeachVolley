@@ -1,4 +1,4 @@
-# Configurazione di /django-admin/ per i modelli di questa app — mi è tornata utile
+# Configurazione di /django-admin/ per i modelli di questa app. Mi è tornata utile
 # soprattutto per correggere i dati a mano durante lo sviluppo.
 from django.contrib import admin
 

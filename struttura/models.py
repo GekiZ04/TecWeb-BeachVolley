@@ -6,7 +6,7 @@ from .time_utils import si_sovrappongono
 class Campo(models.Model):
     """Il campo da beach volley. L'ho fatto come tabella (e non con valori fissi nel
     codice) così nome e descrizione si possono cambiare dall'admin senza toccare niente,
-    anche se di fatto esiste un solo record"""
+    anche se di fatto esiste un solo record."""
     nome = models.CharField(max_length=100, default='Campo da Beach Volley')
     descrizione = models.TextField(blank=True)
 
@@ -26,7 +26,7 @@ class Servizio(models.Model):
 
 
 class OrarioApertura(models.Model):
-    """Orario di apertura per un giorno della settimana un record per ciascuno dei 7
+    """Orario di apertura per un giorno della settimana: un record per ciascuno dei 7
     giorni (giorno_settimana è unique)."""
 
     class Giorno(models.IntegerChoices):
@@ -43,8 +43,8 @@ class OrarioApertura(models.Model):
     giorno_settimana = models.IntegerField(choices=Giorno.choices, unique=True)
     aperto = models.BooleanField(default=True)
     ora_apertura = models.TimeField(default='08:00')
-    # 00:00 qui vuol dire "mezzanotte del giorno dopo", non l'inizio della giornata —
-    # la conversione la fa time_utils.minuti_dalla_mezzanotte
+    # 00:00 qui vuol dire "mezzanotte del giorno dopo", non l'inizio della giornata.
+    # La conversione la fa time_utils.minuti_dalla_mezzanotte
     ora_chiusura = models.TimeField(default='00:00', help_text='00:00 = mezzanotte')
 
     class Meta:

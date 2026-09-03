@@ -207,7 +207,7 @@ class CalendarioAjaxTests(TestCase):
 class DisponibilitaJsonTests(TestCase):
     """L'endpoint AJAX usato dal form di prenotazione, in particolare il parametro
     "escludi" che alla pagina di modifica serve per mostrare come libero lo slot della
-    prenotazione che si sta modificando — ma solo se è del proprietario."""
+    prenotazione che si sta modificando, ma solo se è del proprietario."""
 
     def setUp(self):
         for giorno, _ in OrarioApertura.Giorno.choices:
